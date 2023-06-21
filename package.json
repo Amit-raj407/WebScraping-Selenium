@@ -4,10 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node ./Tests/ScrapeWeb.js",
-    "automate": "node ./Tests/AutomateEcom.js"
+    "test": "node ./Tests/ScrapeWeb.js"
   },
-  "author": "Amit",
+  "author": "Avantika, Amit, Ashutosh, Sritik",
   "license": "ISC",
   "dependencies": {
     "chai": "^4.3.7",

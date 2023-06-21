@@ -17,30 +17,45 @@ function sleep(ms) {
 
   // Set up the webdriver
   let driver = await new Builder().forBrowser("chrome").build();
-  // await driver.get("https://guthib.com/");
+  driver.manage().window().maximize();
   await driver.get("https://medium.com/");
 
-  await sleep(1000);
+  await sleep(5000);
+
+  const urlRegex = /^(?:https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
 
   // Find all links on the page
   let links = await driver.findElements(By.tagName("a"));
+  await sleep(2000);
+
+  let linksArray = []
+  links.forEach(async link => {
+    if(urlRegex.test (await link.getAttribute('href'))) {
+      linksArray.push(link)
+    }
+  })
+
+  await sleep(5000);
 
   // handle no links scenario
-  if(links.length === 0) {
+  if(linksArray.length === 0) {
     console.log("No Links Found... Terminating");
     await driver.quit();
     process.exit(1);
   }
 
   // Choose a random link
-  let random_link = links[Math.floor(Math.random() * links.length)];
+  let random_link = linksArray[Math.floor(Math.random() * linksArray.length)];
 
   // Click on the random link
-  await random_link.click();
+  try{
+    await random_link.click();
+  } catch(err) {
+    console.log(err, await random_link.getAttribute('href'));
+  }
+  
 
   // Wait for the page to load
-  //   await driver.wait(until.urlContains(random_link.getAttribute('href')), 10000);
-
   await sleep(5000);
   
   console.log("Loaded random link");
